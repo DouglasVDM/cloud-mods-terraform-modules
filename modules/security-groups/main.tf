@@ -5,20 +5,21 @@ resource "aws_security_group" "public_security_group" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description      = "http access"
+    description      = "http access including my ip"
     from_port        = 80
     to_port          = 80
     protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
+    cidr_blocks      = ["0.0.0.0/0", "102.65.62.201/32"]
     ipv6_cidr_blocks = ["::/0"]
   }
 
+
   ingress {
-    description      = "https access"
+    description      = "https access including my ip"
     from_port        = 443
     to_port          = 443
     protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
+    cidr_blocks      = ["0.0.0.0/0", "102.65.62.201/32"]
     ipv6_cidr_blocks = ["::/0"]
   }
 
