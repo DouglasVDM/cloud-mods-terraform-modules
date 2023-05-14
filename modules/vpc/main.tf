@@ -49,7 +49,7 @@ resource "aws_subnet" "public_subnet_az2" {
 resource "aws_subnet" "private_subnet_az1" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.private_subnet_az1_cidr
-  availability_zone       = data.aws_availability_zones.available_zones.names[0]
+  availability_zone       = data.aws_availability_zones.available_zones.names[3]
   map_public_ip_on_launch = false
 
   tags = {
@@ -61,7 +61,7 @@ resource "aws_subnet" "private_subnet_az1" {
 resource "aws_subnet" "private_subnet_az2" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.private_subnet_az2_cidr
-  availability_zone       = data.aws_availability_zones.available_zones.names[1]
+  availability_zone       = data.aws_availability_zones.available_zones.names[4]
   map_public_ip_on_launch = false
 
   tags = {
@@ -116,3 +116,15 @@ resource "aws_route_table_association" "private_subnet_az2_route_table_associati
   route_table_id = aws_route_table.private_route_table.id
 }
 
+resource "aws_network_interface" "public-network-interface" {
+  subnet_id       = aws_subnet.public_subnet_az1.id
+  private_ips     = ["10.11.1.50"]
+  security_groups = [var.public_security_group_id]
+}
+
+resource "aws_eip" "elastic-ip" {
+  vpc                       = true
+  network_interface         = aws_network_interface.public-network-interface.id
+  associate_with_private_ip = "10.11.1.50"
+  depends_on                = [aws_internet_gateway.internet_gateway]
+}
