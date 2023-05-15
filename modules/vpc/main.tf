@@ -115,16 +115,3 @@ resource "aws_route_table_association" "private_subnet_az2_route_table_associati
   subnet_id      = aws_subnet.private_subnet_az2.id
   route_table_id = aws_route_table.private_route_table.id
 }
-
-resource "aws_network_interface" "public-network-interface" {
-  subnet_id       = aws_subnet.public_subnet_az1.id
-  private_ips     = ["10.11.1.50"]
-  security_groups = [var.public_security_group_id]
-}
-
-resource "aws_eip" "elastic-ip" {
-  vpc                       = true
-  network_interface         = aws_network_interface.public-network-interface.id
-  associate_with_private_ip = "10.11.1.50"
-  depends_on                = [aws_internet_gateway.internet_gateway]
-}
