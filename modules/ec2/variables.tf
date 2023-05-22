@@ -19,5 +19,5 @@ variable "public_security_group_id" {}
 variable "associate_public_ip_address" {
   type        = bool
   description = "to assign or not to assign public ip address based on the boolean value"
-  default       = true
+  default     = true
 }
